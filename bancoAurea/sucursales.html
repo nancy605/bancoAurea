@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+     <head> <title> Sucursales </title>
+         <script type="text/javascript"> 
+            let dato;
+            let lista_sucursales; 
+            let caja_ubicacion;   
+				 addEvent(window,'load',cargar, false);
+				 function addEvent(ele,eve,fun,cap){
+		         	if(window.attachEvent)
+				      addAttachEvent('on'+eve,fun);
+			        else
+				      ele.addEventListener(eve,fun,cap);
+		         }
+				  function cargar(){      
+			       //addEvent(document.getElementById("lista"),'onchange',mostrarPrecioModelo,false);  
+                    //Obtenemos el id del select y la caja
+                   lista_sucursales= document.getElementById("slt_sucursales"); 
+                   caja_ubicacion= document.getElementById("txt_ubicacion");
+                   //Agregamos el evento change al select
+                   addEvent(lista_sucursales,'change',conexionServidor2,false);
+                   conexionServidor1();    
+		         }
+                function conexionServidor2(){
+                   alert("cs2");
+                   //caja_precio.value =lista_modelos.value;
+                   conexion = xmlhttprequest();
+			             conexion.onreadystatechange = esperaRespuesta2;
+			             conexion.open("POST","obtener_ubicacion.php",true);   
+                   conexion.setRequestHeader("Content-type","application/x-www-form-urlencoded");  
+			              conexion.send("id_sucursal="+lista_sucursales.value);
+
+                }
+                function conexionServidor1(){
+			             conexion = xmlhttprequest();
+			             conexion.onreadystatechange = esperaRespuesta1;
+			             conexion.open("POST","obtener_sucursal.php",true);   
+                      conexion.setRequestHeader("Content-type","application/x-www-form-urlencoded");  
+			             conexion.send();
+		         }
+               function esperaRespuesta1(){ 
+                   if(conexion.readyState == 4){
+                      alert(conexion.responseText);
+			             //dato = eval('('+conexion.responseText+')');
+                      //A dato se le asigna el arreglo clave-valor
+                      dato = eval(conexion.responseText);
+                      agregarOpciones();
+                         
+                   }
+               }  
+
+               function esperaRespuesta2(){
+                  if(conexion.readyState == 4){
+                      alert(conexion.responseText);
+			             dato = eval(conexion.responseText);
+                      caja_ubicacion.value=dato[0]["ubicacion"];
+                      agregarOpciones();
+                      
+                              
+                   } 
+               }   
+               function agregarOpciones(){
+                  //lista_modelos
+                  alert("agregar");
+                  //1.- Creamos un fragment y lo guardamos en una variable 
+                        //entonces fragment1 es como un acumulador  
+                  let fragment1=document.createDocumentFragment();
+                  //Se puede usar también un for-in
+                  for(let i=1;i<=dato[0]["tam"];i++){
+                     //2.- Creamos una etiqueta que se relaciona con la principal y la guardamos en una variable(opcion1). 
+                     let opcion1=document.createElement('OPTION');
+                     //3.- A la etiqueta le asignamos atributos 
+                     opcion1.setAttribute('value',dato[0]["id_sucursal"+i]);
+                     opcion1.textContent=dato[0]["id_sucursal"+i]+ " "+ dato[0]["nom_sucursal"+i] ;
+                     //4.-A la variable del paso 1 (fragment1) le adjuntamos o concatenamos opcion1
+                     fragment1.appendChild(opcion1);
+                  }
+                  //5.-Mediante el id de la etiqueta select, le adjuntamos
+                  // fragment1 que son todas las opciones.  
+
+                  lista_sucursales.appendChild(fragment1);
+              }
+              function xmlhttprequest(){
+		          	return new XMLHttpRequest();
+		        }
+        </script>    
+      </head>
+     <body>
+         <form name="frm_tel" method="post">            		
+             <select  id="slt_sucursales">  
+
+             </select>     
+             <br><br>
+             <input type="text"  id="txt_ubicacion">
+       </form>
+    </body>
+ </html>

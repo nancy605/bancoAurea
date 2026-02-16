@@ -1,0 +1,298 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/css/font-awesome.min.css" rel="stylesheet">
+    <link href="assets/css/style.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-nw04uA6Gb8KuIr7/zpJZ6V3VvXyLqiw5g2Qp0iAJmzN+B6V1Z2VCe0JNwF9tTJpP" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-IXjXzdm6E1UyAUR7uy7WJHkFdq+9pFNGsCsf2V/e5O4J20Nz7xEsEmheq7Hq5cg4" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.9/dist/sweetalert2.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.9/dist/sweetalert2.min.js"></script>
+
+    <title>REGISTRO</title>
+    <style>
+        .horizontal-form .form-group {
+            margin-right: 15px;
+        }
+
+        .horizontal-form .form-group:last-child {
+            margin-right: 0;
+        }
+
+        .horizontal-form .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .horizontal-form .form-03-main {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .horizontal-form .logo {
+            margin-bottom: 20px;
+        }
+
+        .horizontal-form .form-controls {
+            flex: 1 1 auto;
+            width: 100%;
+        }
+
+        .horizontal-form .form-controls .form-group {
+            flex: 1 1 auto;
+        }
+
+        .horizontal-form .btn_Registro {
+            min-width: 150px;
+            margin-top: 20px;
+        }
+
+        .d-flex {
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
+    <script type="text/javascript">
+        var conexion;
+        addEvent(window,'load',cargar, false);
+        function addEvent(ele,eve,fun,cap){
+          if(window.attachEvent)
+              addAttachEvent('on'+eve,fun);
+            else
+        ele.addEventListener(eve,fun,cap);
+    }
+
+
+        
+
+        function cargar() {
+            var botonRegistro = document.querySelector(".btn_Registro");
+            botonRegistro.addEventListener('click', validaDatos, false);
+             // Añadir eventos de keypress a los campos específicos
+            addEvent(document.getElementById('full_name'), 'keypress', filtraLetras, false);
+            addEvent(document.getElementById('postal_code'), 'keypress', filtraNumeros, false);
+            addEvent(document.getElementById('phone'), 'keypress', filtraNumeros, false);
+             addEvent(document.getElementById('saldo'), 'keypress', filtraNumeros, false);
+            addEvent(document.getElementById('numeroCuenta'), 'keypress', filtraNumeros, false);
+             addEvent(document.getElementById('fecha'), 'keypress', filtraNumeros, false);
+           
+        }
+
+        function validaDatos(event) {
+            event.preventDefault();  
+
+            // Obtener valores de los campos del formulario
+            var fullName = document.getElementById('full_name').value;
+            var address = document.getElementById('address').value;
+            var city = document.getElementById('city').value;
+            var state = document.getElementById('state').value;
+            var postalCode = document.getElementById('postal_code').value;
+            var email = document.getElementById('email').value;
+            var phone = document.getElementById('phone').value;
+            var fechaNac = document.getElementById('fechaNac').value;
+            var password = document.getElementById('password').value;
+            var confirmPassword = document.getElementById('confirm_password').value;
+            var numeroCuenta = document.getElementById('numeroCuenta').value;
+            var tipoCuenta = document.getElementById('tipo_cuenta').value;
+            var saldo = document.getElementById('saldo').value;
+            var fecha = document.getElementById('fecha').value;
+            var sucursal = document.getElementById('sucursal').value;
+
+            // Validar datos
+            if (
+                fullName !== "" &&
+                address !== "" &&
+                city !== "" &&
+                state !== "" &&
+                postalCode !== "" &&
+                email !== "" &&
+                phone !== "" &&
+                fechaNac !== "" &&
+                password !== "" &&
+                confirmPassword !== "" &&
+                password === confirmPassword &&
+                numeroCuenta !== "" &&
+                tipoCuenta !== "" &&
+                saldo !== "" &&
+                fecha !== "" &&
+                sucursal !== ""
+            ) {
+                conexionServidor();
+            } else {
+                Swal.fire({
+                    title: "Falta algún dato o las contraseñas no coinciden",
+                    confirmButtonText: "Confirmar"
+                });
+            }
+        }
+
+        function conexionServidor() {
+            var fullName = document.getElementById('full_name').value;
+            var address = document.getElementById('address').value;
+            var city = document.getElementById('city').value;
+            var state = document.getElementById('state').value;
+            var postalCode = document.getElementById('postal_code').value;
+            var email = document.getElementById('email').value;
+            var phone = document.getElementById('phone').value;
+            var fechaNac = document.getElementById('fechaNac').value;
+            var password = document.getElementById('password').value;
+            var confirmPassword = document.getElementById('confirm_password').value;
+            var numeroCuenta = document.getElementById('numeroCuenta').value;
+            var tipoCuenta = document.getElementById('tipo_cuenta').value;
+            var saldo = document.getElementById('saldo').value;
+            var fecha = document.getElementById('fecha').value;
+            var sucursal = document.getElementById('sucursal').value;
+
+            // Concatenar los datos directamente
+            var datos = "full_name=" + fullName +
+                        "&address=" + address +
+                        "&city=" + city +
+                        "&state=" + state +
+                        "&postal_code=" + postalCode +
+                        "&email=" + email +
+                        "&phone=" + phone +
+                        "&fechaNac=" + fechaNac +
+                        "&password=" + password +
+                        "&confirm_password=" + confirmPassword +
+                        "&numeroCuenta=" + numeroCuenta +
+                        "&tipo_cuenta=" + tipoCuenta +
+                        "&saldo=" + saldo +
+                        "&fecha=" + fecha +
+                        "&sucursal=" + sucursal;
+
+            // Crear la solicitud AJAX
+            conexion = xmlhttprequest();
+            conexion.onreadystatechange = esperaRespuesta;
+            conexion.open("POST", "registrar_cliente.php", true);
+            conexion.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            conexion.send(datos);
+        }
+
+        function esperaRespuesta() {
+            if (conexion.readyState === 4) {
+                Swal.fire({
+                    title: "Registro exitoso",
+                    text: conexion.responseText,
+                    confirmButtonText: "Confirmar"
+                });
+            }
+        }
+        function xmlhttprequest(){
+        return new XMLHttpRequest();
+    }
+    function filtraLetras(){
+      if(event.keyCode>=65 && event.keyCode<=90){
+        event.returnValue=true;
+      } else if(event.keyCode>=97 && event.keyCode<=122){
+        event.returnValue=true;
+      }else
+        event.returnValue=false;
+    }
+    function filtraNumeros(){
+        if(event.keyCode>=48 && event.keyCode<=57)
+          event.returnValue=true;
+        else
+          event.returnValue=false;
+      }
+    </script>
+</head>
+<body>
+<section class="form-02-main">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-12">
+                <div class="_lk_de horizontal-form">
+                    <div class="form-03-main">
+                        <div class="logo">
+                            <img src="assets/images/user.png" alt="User Icon"> 
+                            <span class="logo-text">Banco Áurea</span>
+                        </div>
+                        <form method="post" class="form-controls">
+                            Datos Personales
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <input type="text" id="full_name" name="full_name" class="form-control" placeholder="Nombre Completo">
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" id="address" name="address" class="form-control" placeholder="Dirección">
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" id="city" name="city" class="form-control" placeholder="Ciudad">
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" id="state" name="state" class="form-control" placeholder="Estado/Provincia">
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" id="postal_code" name="postal_code" class="form-control" placeholder="Código Postal">
+                                </div>
+                                <div class="form-group">
+                                    <input type="email" id="email" name="email" class="form-control" placeholder="Email">
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" id="phone" name="phone" class="form-control" placeholder="Número de Teléfono">
+                                </div>
+                                <div class="form-group">
+                                    <input type="date" id="fechaNac" name="fechaNac" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <input type="password" id="password" name="password" class="form-control" placeholder="Contraseña">
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" id="confirm_password" name="confirm_password" class="form-control" placeholder="Confirmar Contraseña">
+                                </div>
+                            </div>
+
+                            Datos de la cuenta
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <input type="text" id="numeroCuenta" name="numeroCuenta" class="form-control" placeholder="Numero de Cuenta">
+                                </div>
+                                <div class="form-group">
+                                    <select id="tipo_cuenta" name="tipo_cuenta" class="form-control">
+                                        <option value="" disabled selected>Selecciona el tipo de cuenta</option>
+                                        <option value="ahorro">Ahorro</option>
+                                        <option value="corriente">Corriente</option>
+                                        <option value="inversion">Nómina</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" id="saldo" name="saldo" class="form-control" placeholder="Saldo">
+                                </div>
+                                <div class="form-group">
+                                    <input type="date" id="fecha" name="fecha" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <select id="sucursal" name="sucursal" class="form-control">
+                                        <option value="" disabled selected>Selecciona la sucursal</option>
+                                        <option value="sucursal1">Sucursal 1</option>
+                                        <option value="sucursal2">Sucursal 2</option>
+                                        <option value="sucursal3">Sucursal 3</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <button type="submit" class="btn_Registro">REGISTRAR CLIENTE</button>
+                            </div>
+                            <div class="form-group">
+                                <a href="regisObusc.html" class="btn-regresar"><i class="fa fa-arrow-left"></i> Regresar</a>
+                                <a href="cerrarEmp.php" class="btn-salir" onclick="return confirm('¿Estás seguro de que quieres cerrar sesión?');">Cerrar Sesión</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>
