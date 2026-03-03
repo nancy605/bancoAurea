@@ -19,7 +19,7 @@ if (!isset($_SESSION['cliente']) && !isset($_SESSION['nombre'])) {
         <div class="form-03-main card p-4">
             <div class="logo text-center mb-4">
                 <img src="assets/images/user.png" width="80">
-                <h2 class="d-block">Alta de Nuevo Cliente</h2>
+                <h2 class="d-block"></h2>
             </div>
 
             <form action="../src/operations/guardar-cliente.php" method="POST">
